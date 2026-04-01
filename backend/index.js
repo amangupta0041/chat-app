@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const corsOption={
-    origin:'http://localhost:3000',
+    origin: true,
     credentials:true
 };
 app.use(cors(corsOption));
@@ -34,7 +34,8 @@ app.use("/api/v1/message", messageRoute);
 app.use(express.static(path.join(__dirname, "/frontend/build")));
 
 // render frontend for any path that does not match an api route
-app.get("*", (req, res) => {
+// FIXED for Express 5: Use (.*) instead of * to match anything
+app.get("(.*)", (req, res) => {
     res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
 });
 
