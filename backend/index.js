@@ -31,11 +31,11 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/message", messageRoute);
 
 // 3. STATIC FILES (Serving Frontend)
-app.use(express.static(path.join(__dirname, "/frontend/build")));
+app.use(express.static(path.join(__dirname, "frontend", "build")));
 
 // render frontend for any path that does not match an api route
-// FIXED for Express 5: Use (.*) instead of * to match anything
-app.get("(.*)", (req, res) => {
+// FIXED for Express 5 Stability: Using a Middleware instead of a Wildcard String
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
 });
 
