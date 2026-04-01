@@ -89,6 +89,41 @@ export const getOtherUsers = async (req, res) => {
         const otherUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
         return res.status(200).json(otherUsers);
     } catch (error) {
-        console.log(error);
+        console.log("Error in getOtherUsers:", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { username } = req.body;
+        if (!username) {
+            return res.status(400).json({ message: "Username is required to reset password" });
+        }
+
+        const trimmedUsername = username.trim();
+
+        const user = await User.findOne({ username: trimmedUsername });
+        if (!user) {
+            return res.status(404).json({ message: "User not found with that username" });
+        }
+
+        // Generate an 8 character random alphanumeric password
+        const generatedPassword = Math.random().toString(36).slice(-8);
+        
+        // Hash it
+        const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+        
+        // Update user
+        user.password = hashedPassword;
+        await user.save();
+
+        return res.status(200).json({ 
+            message: "Password reset successful!", 
+            newPassword: generatedPassword 
+        });
+    } catch (error) {
+        console.log("Error in resetPassword:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
