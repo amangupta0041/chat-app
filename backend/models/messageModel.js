@@ -14,6 +14,14 @@ const messageModel = new mongoose.Schema({
     message:{
         type:String,
         required:true
-    }
+    },
+    isRead: {
+        type: Boolean,
+        default: false
+    },
+    deletedBy: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }]
 },{timestamps:true});
 export const Message = mongoose.model("Message", messageModel);
