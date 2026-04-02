@@ -6,10 +6,10 @@ import messageRoute from "./routes/messageRoute.js";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
-import { fileURLToPath } from 'url';
+// FIXED: You already import app and server from socket.js, so you don't need 'import express' again here.
+import { app, server } from "./socket/socket.js"; 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.resolve();
 
 dotenv.config({});
 
@@ -20,9 +20,14 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cookieParser());
 
-const corsOption={
-    origin: true,
-    credentials:true
+const allowedOrigins = [
+    'http://localhost:3000',
+    process.env.CLIENT_URL
+].filter(Boolean);
+
+const corsOption = {
+    origin: allowedOrigins,
+    credentials: true
 };
 app.use(cors(corsOption));
 
@@ -31,12 +36,11 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/message", messageRoute);
 
 // 3. STATIC FILES (Serving Frontend)
-app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
+app.use(express.static(path.join(__dirname, "/frontend/build")));
 
 // render frontend for any path that does not match an api route
-// FIXED for Express 5 Stability: Using a Middleware instead of a Wildcard String
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
+app.get("/*splat", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
 });
 
 // 4. SERVER INITIALIZATION

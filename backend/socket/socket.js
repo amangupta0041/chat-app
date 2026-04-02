@@ -7,8 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        // FIXED for production: Allow dynamic origins
-        origin: true,
+        // FIXED: Removed the trailing slash from URL and changed 'method' to 'methods'
+        origin: ['http://localhost:3000'],
         methods: ['GET', 'POST'],
     },
 });
