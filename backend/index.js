@@ -39,7 +39,7 @@ app.use("/api/v1/message", messageRoute);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // render frontend for any path that does not match an api route
-app.get("/*splat", (req, res) => {
+app.get("/{*splat}", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
 });
 
