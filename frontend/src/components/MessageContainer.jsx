@@ -39,13 +39,21 @@ const MessageContainer = () => {
     };
 
     return (
-        <div className='md:min-w-[550px] flex flex-col h-full'>
+        <div className='flex flex-col h-full w-full'>
             {
                 selectedUser !== null ? (
                     <>
                         {/* Header Section */}
                         {/* Header Section */}
                         <div className='flex justify-between items-center bg-zinc-800 text-white px-4 py-3 mb-1 border-b border-slate-700 shadow-sm'>
+                            {/* Back button - mobile only */}
+                            <button 
+                                onClick={() => dispatch(setSelectedUser(null))}
+                                className='md:hidden mr-2 p-1.5 rounded-full hover:bg-zinc-700 text-zinc-300 hover:text-white transition-colors'
+                                title="Back"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                            </button>
                             <div className='flex gap-3 items-center'>
                                 {/* DaisyUI 'online' class provides the green dot on the avatar */}
                                 <div className={`avatar ${isOnline ? 'online' : ''}`}>

@@ -44,13 +44,13 @@ const Sidebar = () => {
     }
 
     return (
-        <div className='border-r border-slate-500 p-4 flex flex-col h-full'>
+        <div className='border-r border-slate-500 p-4 flex flex-col h-full w-full md:w-80'>
             {/* Search Section */}
             <form onSubmit={searchSubmitHandler} className='flex items-center gap-2'>
                 <input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className='input input-bordered rounded-md bg-transparent text-white' 
+                    className='input input-bordered rounded-md bg-transparent text-white w-full'
                     type="text"
                     placeholder='Search...'
                 />
