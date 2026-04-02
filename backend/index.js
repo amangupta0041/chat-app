@@ -36,11 +36,11 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/message", messageRoute);
 
 // 3. STATIC FILES (Serving Frontend)
-app.use(express.static(path.join(__dirname, "/frontend/build")));
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // render frontend for any path that does not match an api route
 app.get("/*splat", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
 });
 
 // 4. SERVER INITIALIZATION
