@@ -6,10 +6,12 @@ import messageRoute from "./routes/messageRoute.js";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
+import { fileURLToPath } from 'url';
 // FIXED: You already import app and server from socket.js, so you don't need 'import express' again here.
 import { app, server } from "./socket/socket.js"; 
 
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config({});
 
@@ -40,7 +42,12 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // render frontend for any path that does not match an api route
 app.get("/{*splat}", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+    const indexPath = path.join(__dirname, "../frontend", "build", "index.html");
+    res.sendFile(indexPath, (err) => {
+        if (err) {
+            res.status(200).send("Backend server is running! (Frontend build not found, please use React Dev Server on port 3000 for local development)");
+        }
+    });
 });
 
 // 4. SERVER INITIALIZATION
